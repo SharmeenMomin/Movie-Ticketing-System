@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movies</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .notice {
+      color: green;
+      text-align: center;
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+    td a {
+      padding: 8px 12px;
+      background-color: #2980b9;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-right: 5px;
+    }
+    td a:hover {
+      background-color: #1d6fa5;
+    }
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 30px;
+      font-size: 1.2em;
+      color: #3498db;
+      text-decoration: none;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    .admin-buttons {
+      margin: 20px 0;
+      text-align: center;
+    }
+    .admin-buttons a {
+      margin: 10px;
+      padding: 10px 15px;
+      background-color: #27ae60;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    .admin-buttons a:hover {
+      background-color: #219150;
+    }
+    .delete-button {
+      background-color: #e74c3c !important;
+    }
+    .delete-button:hover {
+      background-color: #c0392b !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <p class="notice"><%= notice %></p>
+    <h1>Available Movies</h1>
+
+    <% if current_user&.username == "Admin" %>
+      <div class="admin-buttons">
+        <%= link_to "New Movie", new_movie_path %>
+      </div>
+    <% end %>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Genre</th>
+          <th>Duration</th>
+          <th>Language</th>
+          <th>Rating</th>
+          <th>Release Date</th>
+          <th>Shows</th>
+          <% if current_user&.username == "Admin" %>
+            <th>Actions</th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% @movies.each do |movie| %>
+          <tr>
+            <td><%= movie.title %></td>
+            <td><%= movie.genre %></td>
+            <td><%= movie.duration %> hrs</td>
+            <td><%= movie.language %></td>
+            <td><%= movie.rating %></td>
+            <td><%= movie.release_date %></td>
+            <td>
+              <%= link_to "View Available Shows", movie_shows_path(movie) %>
+            </td>
+            <% if current_user&.username == "Admin" %>
+              <td>
+                <%= link_to "Edit", edit_movie_path(movie), class: "edit-button" %>
+                <%= link_to "Delete", movie_path(movie), method: :delete, data: { confirm: "Are you sure?" }, class: "delete-button" %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <%= link_to "Back to Home Page", (current_user&.username == "Admin" ? admin_dashboard_path : home_index_path), class: "back-link" %>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Show Details</title>
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f4f4f9;
+          margin: 0;
+          padding: 0;
+      }
+      .container {
+          max-width: 800px;
+          margin: 50px auto;
+          padding: 20px;
+          background: #fff;
+          border-radius: 12px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          text-align: center;
+      }
+      .notice {
+          color: green;
+          font-size: 1.2em;
+          margin-bottom: 20px;
+      }
+      h1 {
+          color: #2c3e50;
+          font-size: 2em;
+          margin-bottom: 10px;
+      }
+      .show-details {
+          font-size: 1.2em;
+          color: #34495e;
+          line-height: 1.6;
+          text-align: left;
+          margin-top: 20px;
+      }
+      .action-links {
+          margin-top: 30px;
+          display: flex;
+          justify-content: center;
+          gap: 20px;
+      }
+      .action-links a {
+          text-decoration: none;
+          font-size: 1.2em;
+          font-weight: bold;
+          padding: 10px 15px;
+          border-radius: 8px;
+          transition: background 0.3s;
+      }
+      .back-home {
+          background: #3498db;
+          color: white;
+      }
+      .back-home:hover {
+          background: #2980b9;
+      }
+      .purchase-btn, .unavailable-btn {
+          padding: 8px 15px;
+          font-size: 1.1em;
+          border-radius: 5px;
+          text-align: center;
+          cursor: pointer;
+      }
+      .purchase-btn {
+          background-color: #2980b9;
+          color: white;
+          border: none;
+          text-decoration: none;
+          font-size: 1em;
+          font-weight: bold;
+          padding: 10px 15px;
+          border-radius: 8px;
+          transition: background 0.3s;
+      }
+      .purchase-btn:hover {
+          background-color: #27ae60;
+      }
+      .unavailable-btn {
+          background-color: #e74c3c;
+          color: white;
+          border: none;
+      }
+      .unavailable-btn:hover {
+          background-color: #c0392b;
+      }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <% if notice.present? %>
+    <p class="notice"><%= notice %></p>
+  <% end %>
+
+  <h1>Show Details</h1>
+
+  <% if current_user&.username == "Admin" %>
+    <!-- Admin View: Table of all available shows for the movie -->
+    <div class="show-details">
+      <h2>Available Shows for <%= @show.movie.title %></h2>
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Seats Available</th>
+          <th>Screen</th>
+          <th>Ticket Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><%= @show.date %></td>
+          <td><%= @show.time %></td>
+          <td><%= @show.seats_available %></td>
+          <td><%= @show.screen.name %></td>
+          <td>$<%= @show.ticket_price %></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <!-- Non-Admin View: Purchase tickets section -->
+    <div class="show-details">
+      <p><strong>Movie:</strong> <%= @show.movie.title %></p>
+      <p><strong>Date:</strong> <%= @show.date.strftime("%B %d, %Y") %></p>
+      <p><strong>Time:</strong> <%= @show.time.strftime("%H:%M:%S") %></p>
+      <p><strong>Screen:</strong> <%= @show.screen.name %></p>
+      <% if @show.movie.released? && @show.available? %>
+        <%= form_with url: show_tickets_path(@show), method: :post, local: true do |f| %>
+          <label for="quantity"><strong>Number of Tickets:</strong></label>
+          <%= f.number_field :quantity, in: 1..@show.seats_available, value: 1, required: true, id: "ticket-quantity" %>
+
+          <p><strong>Total Price: </strong> $<span id="total-price"><%= @show.ticket_price %></span></p>
+
+          <%= f.submit "Purchase Tickets", class: "purchase-btn" %>
+        <% end %>
+      <% else %>
+        <p class="unavailable-btn">Tickets unavailable</p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="action-links">
+    <%= link_to "Back to Home", (current_user&.username == "Admin" ? admin_dashboard_path : home_index_path), class: "back-home" %>
+    <%= link_to 'View My Booking History', tickets_user_path(current_user.id), class: "back-home" %>
+  </div>
+</div>
+<script>
+    // Get elements
+    const quantityInput = document.getElementById('ticket-quantity');
+    const totalPriceSpan = document.getElementById('total-price');
+    const ticketPrice = <%= @show.ticket_price %>; // Ticket price from Ruby variable
+
+    // Function to update total price
+    function updateTotalPrice() {
+        const quantity = parseInt(quantityInput.value, 10);
+        const total = ticketPrice * quantity;
+        totalPriceSpan.textContent = total.toFixed(2); // Update total price
+    }
+
+    // Event listener to update total price when quantity changes
+    quantityInput.addEventListener('input', updateTotalPrice);
+
+    // Initial total price update
+    updateTotalPrice();
+</script>
+
+</body>
+</html>
