@@ -1,0 +1,25 @@
+<h1>Movie Details</h1>
+<p>
+  <strong>Title Id:</strong> <%= @movie.id %>
+</p>
+<p>
+  <strong>Title:</strong> <%= @movie.title %>
+</p>
+<p>
+  <strong>Release Date:</strong> <%= @movie.release_date %>
+</p>
+<p>
+  <strong>Rating:</strong> <%= @movie.rating %>
+</p>
+<p>
+  <strong>Duration:</strong> <%= @movie.duration %> hours
+</p>
+<p>
+  <strong>Genre:</strong> <%= @movie.genre %>
+</p>
+<p>
+  <strong>Language:</strong> <%= @movie.language %>
+</p>
+
+<%= link_to 'Edit Movie', edit_admin_movie_path(@movie) %> |
+<%= link_to 'Back to Movies List', admin_movies_path %>

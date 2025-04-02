@@ -1,0 +1,11 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @ticket %>
+
+<div>
+  <%= link_to "Edit this ticket", edit_ticket_path(@ticket) %> |
+  <%= link_to "Back to tickets", admin_dashboard_path %> |
+
+  <%= link_to "Cancel Ticket", cancel_ticket_path(@ticket), method: :patch, data: { confirm: "Are you sure?" } %>
+
+</div>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= content_for :title %></title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .notice {
+      color: green;
+      text-align: center;
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    #shows {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    #shows h2 {
+      font-size: 1.5em;
+      color: #3498db;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+
+    td p {
+      color: #e74c3c;
+      font-weight: bold;
+    }
+    .btn {
+      padding: 8px 15px;
+      font-size: 1.1em;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .purchase-btn {
+      background-color: #2980b9;
+      color: white;
+    }
+    .purchase-btn:hover {
+      background-color: #27ae60;
+    }
+    .unavailable-btn {
+      background-color: #e74c3c;
+      color: white;
+    }
+    .unavailable-btn:hover {
+      background-color: #c0392b;
+    }
+    .edit-btn {
+      background-color: #f39c12;
+      color: white;
+    }
+    .edit-btn:hover {
+      background-color: #e67e22;
+    }
+    .delete-btn {
+      background-color: #c0392b;
+      color: white;
+    }
+    .delete-btn:hover {
+      background-color: #a93226;
+    }
+    .back-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .back-links a {
+      font-size: 1.2em;
+      color: #3498db;
+      text-decoration: none;
+    }
+    .back-links a:hover {
+      text-decoration: underline;
+    }
+    td {
+      font-size: 1.1em;
+      text-align: center;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <p class="notice"><%= notice %></p>
+    <h1>Shows</h1>
+
+    <div id="shows">
+      <h2>Available Shows For <%= @movie.title %></h2>
+
+      <% if current_user&.username == "Admin" %>
+        <%= link_to "Add New Show", new_movie_show_path(@movie), class: "btn edit-btn" %>
+      <% end %>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Seats Available</th>
+            <th>Screen</th>
+            <th>Ticket Price</th>
+            <% if current_user&.username == "Admin" %>
+              <th>Actions</th>
+            <% else %>
+              <th>Ticket Availability</th>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody>
+          <% @shows.each do |show| %>
+            <tr>
+              <td><%= show.date %></td>
+              <td><%= show.time %></td>
+              <td><%= show.seats_available %></td>
+              <td><%= show.screen ? show.screen.name : "n/a" %></td>
+              <td>$<%= show.ticket_price %></td>
+
+              <% if current_user&.username == "Admin" %>
+                <td>
+                  <%= link_to "Edit", edit_movie_show_path(@movie, show), class: "btn edit-btn" %>
+                  <%= link_to "Delete", movie_show_path(@movie, show), method: :delete, data: { confirm: "Are you sure?" }, class: "btn delete-btn" %>
+                </td>
+              <% else %>
+                <td>
+                  <% if show.movie.released? && show.available? %>
+                    <%= link_to "Purchase Ticket", show_path(show), class: "btn purchase-btn" %>
+                  <% else %>
+                    <p class="unavailable-btn">Tickets unavailable</p>
+                  <% end %>
+                </td>
+              <% end %>
+
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="back-links">
+      <%= link_to "Back to Home", (current_user&.username == "Admin" ? admin_dashboard_path : home_index_path), class: "back-link" %>
+    </div>
+  </div>
+
+</body>
+</html>

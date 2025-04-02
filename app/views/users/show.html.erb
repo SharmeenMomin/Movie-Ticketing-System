@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Details</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .notice {
+      color: green;
+      text-align: center;
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+    .user-info {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+    .user-info h2 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    .user-info p {
+      font-size: 1.1em;
+      margin-bottom: 20px;
+    }
+    .user-links {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .user-links a,
+    .user-links button {
+      padding: 12px 20px;
+      background-color: #3498db;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1.1em;
+    }
+    .user-links a:hover,
+    .user-links button:hover {
+      background-color: #2980b9;
+    }
+    .user-links .button-delete {
+      background-color: #e74c3c;
+    }
+    .user-links .button-delete:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <p class="notice"><%= notice %></p>
+
+    <div class="user-info">
+      <%= render @user %>
+    </div>
+
+    <div class="user-links">
+      <% if current_user&.username != "Admin" %>
+        <%= link_to "View My Tickets", tickets_user_path(@user) %>
+      <% end %>
+      <%= link_to "Edit Details", edit_user_path(@user) %>
+      <% if current_user&.username == "Admin" %>
+        <%= link_to "Back to Admin Dashboard", admin_dashboard_path %>
+      <% else %>
+        <%= link_to "Back to Home Page", home_index_path %>
+      <% end %>
+      <% if current_user&.username != "Admin" %>
+        <%= button_to "Destroy User", @user, method: :delete, class: "button-delete" %>
+      <% end %>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+<style>
+  /* Form Container */
+  .form-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+
+  /* Form Header */
+  .form-header {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  /* Form Labels & Inputs */
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-block;
+    padding: 10px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: #007bff;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: #0056b3;
+  }
+
+  .btn-secondary {
+    background: #6c757d;
+    color: white;
+  }
+
+  .btn-secondary:hover {
+    background: #545b62;
+  }
+
+  /* Centering the Footer Link */
+  .footer-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+  }
+</style>
+
+<!-- Edit Screen Form -->
+<div class="form-container">
+  <h1 class="form-header">Edit Screen</h1>
+
+  <%= form_with(model: @screen, local: true) do |form| %>
+    <div class="form-group">
+      <%= form.label :name %>
+      <%= form.text_field :name, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :capacity %>
+      <%= form.number_field :capacity, min: 1, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :location %>
+      <%= form.text_field :location, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.submit 'Update Screen', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+
+  <%= link_to 'Manage Screens', screens_path, class: 'btn btn-secondary footer-link' %>
+
+  <%= link_to 'Back to Admin Dashboard', admin_dashboard_path, class: 'btn btn-secondary footer-link' %>
+</div>

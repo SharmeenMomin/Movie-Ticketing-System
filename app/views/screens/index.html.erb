@@ -1,0 +1,159 @@
+<style>
+  /* General Section Styling */
+  .section-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+
+  /* Section Header */
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ddd;
+  }
+
+  .section-header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 22px;
+  }
+
+  /* Buttons */
+  .btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .btn-primary {
+    background: #007bff;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: #0056b3;
+  }
+
+  .btn-danger {
+    background: #dc3545;
+    color: white;
+  }
+
+  .btn-danger:hover {
+    background: #b02a37;
+  }
+
+  .btn-secondary {
+    background: #6c757d;
+    color: white;
+  }
+
+  .btn-secondary:hover {
+    background: #545b62;
+  }
+
+  /* Table Styling */
+  .show-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background: white;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  .show-table th, .show-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .show-table th {
+    background: #007bff;
+    color: white;
+    text-transform: uppercase;
+    font-size: 14px;
+  }
+
+  .show-table tbody tr:nth-child(even) {
+    background: #f2f2f2;
+  }
+
+  /* Action Buttons */
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+  .inline-buttons {
+    display: flex;
+    gap: 5px;
+  }
+
+  /* Section Divider */
+  .section-divider {
+    margin-top: 20px;
+    border: none;
+    height: 2px;
+    background: #ddd;
+  }
+
+  /* Centered Footer Link */
+  .footer-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+  }
+</style>
+
+<!-- Screen Management Section -->
+<div class="section-container">
+  <div class="section-header">
+    <h2>Manage Screens</h2>
+    <%= link_to 'New Screen', new_screen_path, class: 'btn btn-primary' %>
+  </div>
+
+  <!-- Screen List Table -->
+  <table class="show-table">
+    <thead>
+      <tr>
+        <th>Screen Name</th>
+        <th>Seat Capacity</th>
+        <th>Location</th>
+        <th>Actions</th> 
+      </tr>
+    </thead>
+    <tbody>
+      <% @screens.each do |screen| %>
+        <tr>
+          <td><%= screen.name %></td>
+          <td><%= screen.capacity %></td>
+          <td><%= screen.location %></td>
+          <td class="action-buttons">
+            <span class="inline-buttons">
+              <%= link_to 'Edit', edit_screen_path(screen), class: 'btn btn-secondary' %>
+              <%= button_to 'Delete', screen_path(screen), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+            </span>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <hr class="section-divider">
+
+  <%= link_to 'Back to Admin Dashboard', admin_dashboard_path, class: 'btn btn-secondary footer-link' %>
+</div>

@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  movie: one
+  date: 2025-02-10
+  time: 2025-02-10 18:38:14
+  seats_available: 1
+  ticket_price: 9.99
+
+two:
+  movie: two
+  date: 2025-02-10
+  time: 2025-02-10 18:38:14
+  seats_available: 1
+  ticket_price: 9.99

@@ -1,0 +1,201 @@
+
+<% content_for :title, "Editing User" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editing User - Movie Ticketing System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+    
+    #notice {
+      text-align: center;
+      color: #e74c3c;
+      font-size: 1.2em;
+    }
+    
+    .container {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .form-container {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      margin: 0 auto;
+    }
+    
+    .form-container h1 {
+      color: #2c3e50;
+      font-size: 2.5em;
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
+    
+    .form-group {
+      margin-bottom: 25px;
+    }
+    
+    label {
+      display: block;
+      font-size: 1.2em;
+      color: #34495e;
+      margin-top: 4px;
+      margin-bottom: 4px;
+      text-align: left;
+    }
+    
+    input {
+      width: 100%;
+      padding: 7px;
+      font-size: 1.1em;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+    
+    input:focus {
+      border-color: #3498db;
+      outline: none;
+    }
+    
+    input[type="submit"] {
+      background-color: #3498db;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      padding: 15px;
+      font-size: 1.2em;
+      border-radius: 8px;
+      margin-top: 10px;
+      width: 70%;
+      transition: background-color 0.3s;
+    }
+    
+    input[type="submit"]:hover {
+      background-color: #2980b9;
+    }
+    
+    .auth-links {
+      margin-top: 15px;
+      font-size: 1.1em;
+    }
+    
+    .auth-links a {
+      color: #3498db;
+      text-decoration: none;
+    }
+    
+    .auth-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="notice"><%= notice %></div>
+
+  <div class="container">
+    <div class="form-container">
+      <h1>Editing User</h1>
+
+<%= form_with(model: @user,local: true) do |form| %>
+        <% if @user.errors.any? %>
+          <div style="color: red">
+            <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+            <ul>
+              <% @user.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div>
+          <%= form.label :username, style: "display: block" %>
+          <% if @user.username == "Admin" %> <!-- admin is not allowed to change username -->
+            <%= form.text_field :username, readonly: true %>
+          <% else %>
+            <%= form.text_field :username %> <!-- User is allowed to change username -->
+          <% end %>
+        </div>
+
+        <div>
+          <%= form.label :name, style: "display: block" %> <!-- admin and user allowed to change name -->
+          <%= form.text_field :name %>
+        </div>
+
+          <div>
+            <%= form.label :email, style: "display: block" %>
+            <% if @user.username == "Admin" %> <!-- admin is not allowed to change password -->
+              <%= form.text_field :email, readonly: true %>
+            <% else %>
+              <%= form.text_field :email %>
+            <% end %>
+
+          </div>
+
+          <div>
+            <%= form.label :password, style: "display: block" %>
+            <% if @user.username == "Admin" %> <!-- admin is not allowed to change password -->
+              <%= form.password_field :password, value: "SecurePass123", readonly: true %>
+            <% else %>
+              <%= form.password_field :password %>
+            <% end %>
+          </div>
+
+          <div>
+            <%= form.label :password_confirmation,style: "display: block" %>
+            <% if @user.username == "Admin" %> <!-- admin is not allowed to change password -->
+              <%= form.password_field :password_confirmation, value: "SecurePass123", readonly: true %>
+            <% else %>
+              <%= form.password_field :password_confirmation %>
+            <% end %>
+          </div>
+
+
+        <div>
+          <%= form.label :phone_number, style: "display: block" %>
+          <%= form.text_field :phone_number %>
+        </div>
+
+        <div>
+          <%= form.label :address, style: "display: block" %>
+          <%= form.text_field :address %>
+        </div>
+
+        <div>
+          <%= form.label :credit_card, style: "display: block" %>
+          <%= form.text_field :credit_card %>
+        </div>
+
+        <div>
+          <%= form.submit %>
+        </div>
+      <% end %>
+      <div class="auth-links">
+        <%= link_to "Back to Profile", current_user&.username == "Admin" ? admin_dashboard_path : @user %> |
+        <%= link_to "Back to Home",(current_user&.username == "Admin" ? admin_dashboard_path : home_index_path) %>
+        <%# <%= link_to "Back to users", users_path %> 
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

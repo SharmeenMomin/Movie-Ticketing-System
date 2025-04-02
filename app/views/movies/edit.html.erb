@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editing Movie</title>
+    <style>
+        /* General page layout */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Heading */
+        h1 {
+            color: #333;
+            text-align: center;
+            font-size: 36px;
+            margin-top: 20px;
+        }
+
+        /* Form section */
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form labels and inputs */
+        label {
+            display: block;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="number"], input[type="date"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus, input[type="date"]:focus, select:focus {
+            outline: none;
+            border-color:rgb(94, 157, 219);
+        }
+
+        /* Submit button */
+        .submit-button {
+            background-color:rgb(71, 173, 220);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color:rgb(54, 151, 211);
+        }
+                .update-button {
+            background-color: #6c7ae0;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .update-button:hover {
+            background-color: #5a6fd7;
+        }
+
+        /* Links (Show this movie and Back to movies) */
+        .link-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .link-container a {
+            font-size: 16px;
+            color:rgb(60, 173, 218);
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+
+        .link-container a:hover {
+            color:rgb(63, 134, 209);
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Editing Movie</h1>
+
+    <%= form_with(model: @movie, local: true) do |form| %>
+        <div>
+            <%= form.label :title, "Title" %>
+            <%= form.text_field :title, id: :movie_title %>
+        </div>
+
+        <div>
+            <%= form.label :genre, "Genre" %>
+            <%= form.text_field :genre, id: :movie_genre %>
+        </div>
+
+        <div>
+            <%= form.label :duration, "Duration" %>
+            <%= form.number_field :duration, id: :movie_duration, min: 0.1, step: 0.1 %>
+        </div>
+
+        <div>
+            <%= form.label :language, "Language" %>
+            <%= form.text_field :language, id: :movie_language %>
+        </div>
+
+ <div>
+    <%= form.label :rating, "Rating" %>
+    <%= form.select :rating, options_for_select([['G', 'G'], ['PG', 'PG'], ['PG-13', 'PG-13'], ['R', 'R'], ['NC-17', 'NC-17']]), {}, id: :movie_rating %>
+</div>
+
+        <div>
+            <%= form.label :release_date, "Release Date" %>
+            <%= form.date_select :release_date, id: :movie_release_date %>
+        </div>
+
+        <div>
+            <%= form.submit "Update", class: "submit-button" %>
+        </div>
+    <% end %>
+
+
+    <div class="link-container">
+
+        <%= link_to "Back to Admin Dashboard", admin_dashboard_path, class: "back-link-div" %>
+
+    </div>
+
+</body>
+</html>
